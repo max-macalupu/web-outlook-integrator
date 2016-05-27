@@ -8,8 +8,10 @@ public enum OutlookParameters {
 	CLIEND_SEC("client_secret", "4RNhHLZU9cJffLFRraPp8fj"),
 	AUTHORIZ("grant_type", "authorization_code"),
 	RESPONSE_TYPE_CODE("response_type", "code"),
-	SCOPE("scope", "https://outlook.office.com/mail.read"),
-	REDIRECT("redirect_uri", "http://localhost:8080/outlook-auth/");
+	RESPONSE_TYPE_TOKEN("response_type", "token"),
+	SCOPE("scope", "openid+offline_access+profile+https://outlook.office.com/mail.read"),
+	REDIRECT("redirect_uri", "http://localhost:8080/outlook-auth/"),
+	RESOURCE("resource", "http://localhost:8080/outlook-auth/");
 	
 	private String descripcion;
 	private String codigo;
