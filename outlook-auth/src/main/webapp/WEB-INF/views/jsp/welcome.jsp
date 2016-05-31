@@ -98,6 +98,17 @@
 			<label class="col-sm-2 control-label">Refresh Token</label>
 			<input type="text" class="form-control" id="refresh_token_id"></input>
 		</div>
+		
+		<div class="form-group form-group-lg">
+			<label class="col-sm-2 control-label">Nombre</label>
+			<input type="text" class="form-control" id="nombre_id"></input>
+		</div>
+		
+		<div class="form-group form-group-lg">
+			<label class="col-sm-2 control-label">Correo</label>
+			<input type="text" class="form-control" id="correo_id"></input>
+		</div>
+
 
 	</div>
 
@@ -228,6 +239,7 @@
 		$.ajax({
 			url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
 			datatype: "json",
+			crossDomain: true,
 			type: "POST",	
 			contentType: "application/x-www-form-urlencoded",
 			xhrFields: {
@@ -239,40 +251,44 @@
 				"client_id": '${clientID.codigo}',
 				"redirect_uri": '${redirect.codigo}',
 				"client_secret": '${clientSec.codigo}',
-				"grant_type": 'authorization_code'
+				"grant_type": 'authorization_code',
+				"cors": {
+			        "headers": ["Accept", "Authorization", "Content-Type", "If-None-Match", "Accept-language"]
+			}
 			},
 			success: function(data) {
 				$("#acc_token_id").val(data.access_token);
 				$("#auth_token_id").val(data.id_token);
 				$("#refresh_token_id").val(data.refresh_token);
 				$("#acc_token_type").val(data.token_type);
-				getMessages(data.access_token, data.id_token, data.token_type);
+				getUserData(data.access_token, data.id_token, data.token_type);
 			},
 			error: function(e) {
 				console.log("FAIL");
+			},
+			beforeSend: function(req) {
+				req.setRequestHeader("Access-Control-Allow-Origin", "*");
 			}
 		});
 	}
 	
-	function getMessages(acc_token, auth_token, acc_type) {
+	function getUserData(acc_token, acc_type) {
+		//acc_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1iYTlnb0VLWSIsImtpZCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1iYTlnb0VLWSJ9";
 		$.ajax({
-			url: "https://outlook.office.com/api/v1.0/me/messages?$select=Subject,From,DateTimeReceived&$top=25&$orderby=DateTimeReceived%20DESC",
-			datatype: "json",
+			url: "https://outlook.office.com/api/v2.0/me",
+			datatype: "jsonp",
 			type: "GET",	
 			xhrFields: {
 			    withCredentials: false
 			  },
-			data: {
-				"accesstoken": acc_token,
-				"access_token": auth_token,
-				"token_type": acc_type,
-				"Authorization": acc_type+ " " +auth_token,
-				"client_id": '${clientID.codigo}',
-				"redirect_uri": '${redirect.codigo}',
-				"client_secret": '${clientSec.codigo}',
+			headers: {
+				"access_token": acc_token,
+				"Authorization": "Bearer " + acc_token,
 			},
 			success: function(data) {
 				console.log("DONE");
+				$('#correo_id').val(data.EmailAddress);
+				$('#nombre_id').val(data.DisplayName);
 				
 			},
 			error: function(e) {
@@ -295,3 +311,4 @@
 
 </body>
 </html>
+
