@@ -65,9 +65,9 @@
 						class="btn btn-primary btn-lg">Simple Login</button>
 						
 					<button type="button" id="bth-outlook"
-						class="btn btn-primary btn-lg">Outlook Logging Code</button>
-					<button type="button" id="bth-outlook-log"
-						class="btn btn-primary btn-lg">Outlook Logging Token</button>
+						class="btn btn-primary btn-lg">Outlook Logging</button>
+					<button type="button" id="bth-send-email"
+						class="btn btn-primary btn-lg">Enviar Email</button>
 				</div>
 			</div>
 		</form>
@@ -109,7 +109,16 @@
 			<input type="text" class="form-control" id="correo_id"></input>
 		</div>
 
-
+		<div class="form-group form-group-lg">
+			<label class="col-sm-2 control-label">Asunto</label>
+			<input type="text" class="form-control" id="subject_email"></input>
+		</div>
+		
+		<div class="form-group form-group-lg">
+			<label class="col-sm-2 control-label">Mensaje</label>
+			<input type="text" class="form-control" id="message_email"></input>
+		</div>
+		
 	</div>
 
 </div>
@@ -134,6 +143,9 @@
 		});
 		$("#bth-outlook-log").click(function(data){
 			logOutlook();	 
+		});
+		$("#bth-send-email").click(function(data){
+			sendEmail();
 		});
 		var code = urlParameterExtraction.queryStringParameters['code'];
 		if (code) {
@@ -297,7 +309,49 @@
 		});
 	}
 	
-
+	function sendEmail() {
+		acc_token = $("#acc_token_id").val();
+		subject_value = $("#subject_email").val();
+		content_value = $("#message_email").val();
+		
+		var Message = {
+				"Message": {
+				    "Subject": subject_value,
+				    "Body": {
+				      "ContentType": "Text",
+				      "Content": content_value,
+				    },
+				    "ToRecipients": [
+				      {
+				        "EmailAddress": {
+				          "Address": "dmansilla07@gmail.com"
+				        }
+				      }
+				    ]
+				  },
+				"SaveToSentItems": "true"
+		    };
+		
+		$.ajax({
+			url: "https://outlook.office.com/api/v2.0/me/sendmail",
+			type: "POST",
+			contentType: "application/json",
+			headers: {
+				"Authorization": "Bearer " + acc_token,
+			},
+			data: JSON.stringify(Message),
+			success: function(data) {
+				console.log("DONE");
+				$('#correo_id').val(data.EmailAddress);
+				$('#nombre_id').val(data.DisplayName);
+				
+			},
+			error: function(e) {
+				console.log("FAIL");
+			}
+		});
+	}
+	
 	function enableSearchButton(flag) {
 		$("#btn-search").prop("disabled", flag);
 	}

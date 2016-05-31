@@ -9,7 +9,7 @@ public enum OutlookParameters {
 	AUTHORIZ("grant_type", "authorization_code"),
 	RESPONSE_TYPE_CODE("response_type", "code"),
 	RESPONSE_TYPE_TOKEN("response_type", "token"),
-	SCOPE("scope", "openid+offline_access+profile+https://outlook.office.com/mail.read"),
+	SCOPE("scope", "openid+offline_access+profile+https://outlook.office.com/mail.read+https://outlook.office.com/mail.send"),
 	REDIRECT("redirect_uri", "http://localhost:8080/outlook-auth/"),
 	RESOURCE("resource", "http://localhost:8080/outlook-auth/");
 	
