@@ -128,6 +128,11 @@
 	var auth_code;
 	var acc_token;
 	var sess_state;
+	
+	function getUrlBase() {
+		return 'https://xinefserver.com:9090/outlook-auth/';
+	}
+	
 	jQuery(document).ready(function($) {
 
 		$("#search-form").submit(function(event) {
@@ -257,7 +262,6 @@
 			xhrFields: {
 			    withCredentials: false
 			  },
-
 			data: {
 				"code": authCode,
 				"client_id": '${clientID.codigo}',
@@ -266,20 +270,21 @@
 				"grant_type": 'authorization_code',
 				"cors": {
 			        "headers": ["Accept", "Authorization", "Content-Type", "If-None-Match", "Accept-language"]
-			}
+				}
 			},
 			success: function(data) {
 				$("#acc_token_id").val(data.access_token);
 				$("#auth_token_id").val(data.id_token);
 				$("#refresh_token_id").val(data.refresh_token);
 				$("#acc_token_type").val(data.token_type);
-				getUserData(data.access_token, data.id_token, data.token_type);
+				getUserDataByToken(data.access_token);
 			},
 			error: function(e) {
 				console.log("FAIL");
 			},
 			beforeSend: function(req) {
-				req.setRequestHeader("Access-Control-Allow-Origin", "*");
+				req.setRequestHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+				req.setRequestHeader('Access-Control-Allow-Headers', 'Accept, Content-Type, Content-Range, Content-Disposition, Content-Description');
 			}
 		});
 	}
@@ -304,6 +309,26 @@
 				
 			},
 			error: function(e) {
+				console.log("FAIL");
+			}
+		});
+	}
+	
+	function getUserDataByToken(acc_token) {
+		$.ajax({
+			url: getUrlBase() + '/getBodyToken',
+			type: 'POST',
+			async: false,
+			cache: false,
+			datatype: 'json',
+			data:{
+				idToken: acc_token
+			},
+			success: function(data) {
+				$('#correo_id').val(data.unique_name);
+				$('#nombre_id').val(data.given_name);
+			},
+			error: function(data) {
 				console.log("FAIL");
 			}
 		});
@@ -341,10 +366,7 @@
 			},
 			data: JSON.stringify(Message),
 			success: function(data) {
-				console.log("DONE");
-				$('#correo_id').val(data.EmailAddress);
-				$('#nombre_id').val(data.DisplayName);
-				
+				console.log("DONE");				
 			},
 			error: function(e) {
 				console.log("FAIL");

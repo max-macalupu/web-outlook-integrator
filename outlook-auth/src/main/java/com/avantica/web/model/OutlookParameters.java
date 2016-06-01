@@ -10,8 +10,8 @@ public enum OutlookParameters {
 	RESPONSE_TYPE_CODE("response_type", "code"),
 	RESPONSE_TYPE_TOKEN("response_type", "token"),
 	SCOPE("scope", "openid+offline_access+profile+https://outlook.office.com/mail.read+https://outlook.office.com/mail.send"),
-	REDIRECT("redirect_uri", "http://localhost:8080/outlook-auth/"),
-	RESOURCE("resource", "http://localhost:8080/outlook-auth/");
+	REDIRECT("redirect_uri", "https://xinefserver.com:9090/outlook-auth/"),
+	RESOURCE("resource", "https://xinefserver.com:9090/outlook-auth/");
 	
 	private String descripcion;
 	private String codigo;
