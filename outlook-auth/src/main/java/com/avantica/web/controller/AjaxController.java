@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.avantica.web.jsonview.Views;
 import com.avantica.web.model.AjaxResponseBody;
+import com.avantica.web.model.BodyToken;
+import com.avantica.web.model.DecodeUtil;
 import com.avantica.web.model.SearchCriteria;
 import com.avantica.web.model.User;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -50,6 +57,15 @@ public class AjaxController {
 		//AjaxResponseBody will be converted into json format and send back to client.
 		return result;
 
+	}
+
+	@RequestMapping(value = "/getBodyToken", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody
+	BodyToken getUrlVideo(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="idToken", required = false) String token) throws Exception {
+		BodyToken bodyToken = DecodeUtil.decodeToken(token);
+		return bodyToken;
 	}
 
 	private boolean isValidSearchCriteria(SearchCriteria search) {
