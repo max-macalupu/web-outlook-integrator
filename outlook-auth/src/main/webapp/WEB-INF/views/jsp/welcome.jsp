@@ -67,7 +67,7 @@
 					<button type="button" id="bth-outlook"
 						class="btn btn-primary btn-lg">Outlook Logging</button>
 					<button type="button" id="bth-send-email"
-						class="btn btn-primary btn-lg">Enviar Email</button>
+						class="btn btn-primary btn-lg" style="display:none">Enviar Email</button>
 				</div>
 			</div>
 		</form>
