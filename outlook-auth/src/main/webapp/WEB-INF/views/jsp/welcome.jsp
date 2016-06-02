@@ -67,34 +67,34 @@
 					<button type="button" id="bth-outlook"
 						class="btn btn-primary btn-lg">Outlook Logging</button>
 					<button type="button" id="bth-send-email"
-						class="btn btn-primary btn-lg">Enviar Email</button>
+						class="btn btn-primary btn-lg" style="display:none">Enviar Email</button>
 				</div>
 			</div>
 		</form>
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display:none">
 			<label class="col-sm-2 control-label">Authorization Code</label>
 			<input type="text" class="form-control" id="code_id"></input>
 		</div>
 
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display:none">
 			<label class="col-sm-2 control-label">Session State</label>
 			<input type="text" class="form-control" id="session_state_id"></input>
 		</div>
 
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display:none">
 			<label class="col-sm-2 control-label">Access Token</label>
 			<input type="text" class="form-control" id="acc_token_id"></input>
 		</div>
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display: none;">
 			<label class="col-sm-2 control-label">Token Type</label>
 			<input type="text" class="form-control" id="acc_token_type"></input>
 		</div>
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display: none;">
 			<label class="col-sm-2 control-label">Authentication Token</label>
 			<input type="text" class="form-control" id="auth_token_id"></input>
 		</div>
 		
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display: none;">
 			<label class="col-sm-2 control-label">Refresh Token</label>
 			<input type="text" class="form-control" id="refresh_token_id"></input>
 		</div>
@@ -105,16 +105,28 @@
 		</div>
 		
 		<div class="form-group form-group-lg">
+			<label class="col-sm-2 control-label">Apellido</label>
+			<input type="text" class="form-control" id="apellido_id"></input>
+		</div>
+		
+		<div class="form-group form-group-lg">
+			<label class="col-sm-2 control-label">IP Address</label>
+			<input type="text" class="form-control" id="ipaddr_id"></input>
+		</div>
+		
+		<div class="form-group form-group-lg">
 			<label class="col-sm-2 control-label">Correo</label>
 			<input type="text" class="form-control" id="correo_id"></input>
 		</div>
+		
+			
 
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display: none;">
 			<label class="col-sm-2 control-label">Asunto</label>
 			<input type="text" class="form-control" id="subject_email"></input>
 		</div>
 		
-		<div class="form-group form-group-lg">
+		<div class="form-group form-group-lg" style="display: none;">
 			<label class="col-sm-2 control-label">Mensaje</label>
 			<input type="text" class="form-control" id="message_email"></input>
 		</div>
@@ -144,7 +156,7 @@
 		});
 		
 		$("#bth-outlook").click(function(data){
-			regOutlook();
+			logOutlook();
 		});
 		$("#bth-outlook-log").click(function(data){
 			logOutlook();	 
@@ -152,16 +164,9 @@
 		$("#bth-send-email").click(function(data){
 			sendEmail();
 		});
-		var code = urlParameterExtraction.queryStringParameters['code'];
-		if (code) {
-			auth_code = code;
-		}
-		var session_state = urlParameterExtraction.queryStringParameters['session_state'];
-		if (session_state) {
-			sess_state = session_state;
-		}
-		getTokensByAuthCode(auth_code);
-		setTokenID();
+		
+		var code = urlParameterExtraction.queryStringParameters['oid'];
+		getUserDataByOid(code);
 	});
 	
 	function setTokenID() {
@@ -327,6 +332,28 @@
 			success: function(data) {
 				$('#correo_id').val(data.unique_name);
 				$('#nombre_id').val(data.given_name);
+			},
+			error: function(data) {
+				console.log("FAIL");
+			}
+		});
+	}
+	
+	function getUserDataByOid(oidToken) {
+		$.ajax({
+			url: getUrlBase() + '/getSessionInfo',
+			type: 'GET',
+			async: false,
+			cache: false,
+			datatype: 'json',
+			data:{
+				oid: oidToken
+			},
+			success: function(data) {
+				$('#correo_id').val(data.unique_name);
+				$('#nombre_id').val(data.given_name);
+				$('#apellido_id').val(data.family_name);
+				$('#ipaddr_id').val(data.ipaddr);
 			},
 			error: function(data) {
 				console.log("FAIL");

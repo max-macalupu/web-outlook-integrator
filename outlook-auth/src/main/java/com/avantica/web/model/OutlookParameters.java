@@ -4,8 +4,8 @@ public enum OutlookParameters {
 	
 	TOKEN_URL("url", "https://login.microsoftonline.com/common/oauth2/v2.0/token"),
 	TOKEN_LOGIN("url", "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"),
-	CLIEND_ID("client_id", "bba8a36d-866a-4745-9bb3-018fd877587b"),
-	CLIEND_SEC("client_secret", "rOXah2VrXRknsdP3p3TYHJK"),
+	CLIEND_ID("client_id", "04aef256-67a0-4268-997a-f84a8860b697"),
+	CLIEND_SEC("client_secret", "S8HJBoQeoBTtfKCOK91XEY8"),
 	AUTHORIZ("grant_type", "authorization_code"),
 	RESPONSE_TYPE_CODE("response_type", "code"),
 	RESPONSE_TYPE_TOKEN("response_type", "token"),

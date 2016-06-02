@@ -40,11 +40,15 @@
 </div>
 
 <script>
+
+	function getUrlBase() {
+		return 'https://xinefserver.com:9090/outlook-auth/';
+	}
 	jQuery(document).ready(function($) {
 		var code = urlParameterExtraction.queryStringParameters['access_token'];
 		$.ajax({
 			type : "GET",
-			url : "saveSession?idToken="+code,
+			url : getUrlBase() + "/saveSession?idToken="+code,
 			contentType : "application/json",
 			success : function(data) {
 				var completeURL = window.location.protocol + "//"+ window.location.host+window.location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
@@ -57,7 +61,7 @@
 			}
 		});
 	});
-
+	
 	var urlParameterExtraction = new (function() {
 		function splitQueryString(queryStringFormattedString) {
 			var split = queryStringFormattedString.split('&');

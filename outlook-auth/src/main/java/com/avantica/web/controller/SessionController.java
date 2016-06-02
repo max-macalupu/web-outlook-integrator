@@ -25,4 +25,13 @@ public class SessionController {
 		Sessions.nuevo(bodyToken);
 		return bodyToken;
 	}
+	
+	@RequestMapping(value = "/getSessionInfo", method = RequestMethod.GET)
+	public @ResponseBody
+	BodyToken getSession(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="oid", required = false) String oid) throws Exception {
+		return Sessions.getSession(oid);
+	}
+	
 }
