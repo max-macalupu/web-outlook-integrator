@@ -12,5 +12,9 @@ public class WelcomeController {
 	public String printWelcome(ModelMap model) {
 		return "welcome";
 	}
-
+	
+	@RequestMapping(value = "/autenticate")
+	public String autenticate() {
+		return "redirect";
+	}
 }
