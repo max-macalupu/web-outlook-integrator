@@ -13,6 +13,7 @@ public class Sessions extends HashMap<String, BodyToken>{
 	private static Sessions sessions;
 	
 	private Sessions(){
+		super();
 	}
 	
 	private static Sessions getInstance(){
