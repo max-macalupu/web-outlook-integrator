@@ -158,9 +158,6 @@
 		$("#bth-outlook").click(function(data){
 			logOutlook();
 		});
-		$("#bth-outlook-log").click(function(data){
-			logOutlook();	 
-		});
 		$("#bth-send-email").click(function(data){
 			sendEmail();
 		});
@@ -175,24 +172,23 @@
 		$('#session_state_id').val(sess_state);
 	}
 	
-	function regOutlook(){
-		var urlLogin = '${tokenLogin.codigo}';
-		urlLogin += "?"+'${clientID.descripcion}'+"="+encodeURI('${clientID.codigo}');
-		urlLogin += "&"+'${redirect.descripcion}'+"="+encodeURI('${redirect.codigo}');
-		urlLogin += "&"+'${authoriz.descripcion}'+"="+encodeURI('${authoriz.codigo}');
-		urlLogin += "&"+'${scope.descripcion}'+"="+encodeURI('${scope.codigo}');
-		urlLogin += "&"+'${resposeCode.descripcion}'+"="+encodeURI('${resposeCode.codigo}');
-		window.location.href = urlLogin;
-	}
-	
-	function logOutlook(){
-		var urlLogin = '${tokenLogin.codigo}';
-		urlLogin += "?"+'${clientID.descripcion}'+"="+encodeURI('${clientID.codigo}');
-		urlLogin += "&"+'${redirect.descripcion}'+"="+encodeURI('${redirect.codigo}');
-		urlLogin += "&"+'${authoriz.descripcion}'+"="+encodeURI('${authoriz.codigo}');
-		urlLogin += "&"+'${scope.descripcion}'+"="+encodeURI('${scope.codigo}');
-		urlLogin += "&"+'${resposeToken.descripcion}'+"="+encodeURI('${resposeToken.codigo}');
-		window.location.href = urlLogin;
+	function logOutlook(){		
+		$.ajax({
+			url: getUrlBase() + '/redirectAuth',
+			type: 'GET',
+			datatype: 'jsonp',
+			success: function(data) {
+				window.location.href = data;
+			},
+			error: function(data) {
+				console.log("FAIL");
+			},
+			beforeSend: function(req) {
+				req.setRequestHeader('Access-Control-Allow-Origin', '*');
+				req.setRequestHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+				req.setRequestHeader('Access-Control-Allow-Headers', 'Accept, Content-Type, Content-Range, Content-Disposition, Content-Description');
+			}
+		});		
 	}
 	
 	function getPositionSign(urlName) {
@@ -228,7 +224,6 @@
 
 	
 	function searchViaAjax() {
-
 		var search = {}
 		search["username"] = $("#username").val();
 		search["email"] = $("#email").val();
@@ -295,7 +290,6 @@
 	}
 	
 	function getUserData(acc_token, acc_type) {
-		//acc_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1iYTlnb0VLWSIsImtpZCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1iYTlnb0VLWSJ9";
 		$.ajax({
 			url: "https://outlook.office.com/api/v2.0/me",
 			datatype: "jsonp",
