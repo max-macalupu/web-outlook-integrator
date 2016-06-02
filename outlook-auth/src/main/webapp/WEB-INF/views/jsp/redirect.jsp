@@ -30,42 +30,14 @@
 <div class="container" style="min-height: 500px">
 
 	<div class="starter-template">
-		<h1>Search Form</h1>
-		<br>
-
 		<div id="feedback"></div>
-
 		<form class="form-horizontal" id="search-form">
 			<div class="form-group form-group-lg">
-				<label class="col-sm-2 control-label">Username</label>
-				<div class="col-sm-10">
-					<input type=text class="form-control" id="username">
-				</div>
-			</div>
-			<div class="form-group form-group-lg">
-				<label class="col-sm-2 control-label">Email</label>
-				<div class="col-sm-10">
-					<input type="text" class="form-control" id="email">
-				</div>
-			</div>
-
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" id="bth-search"
-						class="btn btn-primary btn-lg">Simple Login</button>
-
-					<button type="button" id="bth-outlook"
-						class="btn btn-primary btn-lg">Outlook Logging</button>
-					<button type="button" id="bth-send-email"
-						class="btn btn-primary btn-lg">Enviar Email</button>
-				</div>
+				<label class="col-sm-2 control-label"><b>Loading.....</b></label>
 			</div>
 		</form>
-
 	</div>
-
 </div>
-
 
 <script>
 	jQuery(document).ready(function($) {
@@ -75,16 +47,13 @@
 			url : "saveSession?idToken="+code,
 			contentType : "application/json",
 			success : function(data) {
-				alert(window.location.host);
-				window.location.href = "";
+				var completeURL = window.location.protocol + "//"+ window.location.host+window.location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
+				completeURL += "?oid="+data.oid;
+				window.location.href = completeURL;
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
 				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-				enableSearchButton(true);
 			}
 		});
 	});
